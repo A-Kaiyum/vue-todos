@@ -13,6 +13,19 @@ const createTodo = (todo) => {
     isEditing: null,
   });
 };
+const toggleCompleted = (todoPos) => {
+  todoList.value[todoPos].isCompleted = !todoList.value[todoPos].isCompleted;
+}
+const todoEdit = (todoPos) => {
+  todoList.value[todoPos].isEditing = !todoList.value[todoPos].isEditing;
+}
+const todoUpdate = (todoVal, todoPos) => {
+  console.log(todoVal);
+  todoList.value[todoPos].todo = todoVal;
+}
+const todoDelete = (todoId) => {
+  todoList.value = todoList.value.filter((todo)=>todo.id !== todoId)
+}
 </script>
 
 <template>
@@ -20,7 +33,13 @@ const createTodo = (todo) => {
     <h1>Create Todos</h1>
     <TodosCreator @create-todo="createTodo"/>
     <ul class="todo-list" v-if="todoList.length>0">
-      <TodoItem v-for="todo in todoList" :todo="todo"/>
+      <TodoItem v-for="(todo,index) in todoList" 
+      :todo="todo" :index="index" 
+      @toggle-complete="toggleCompleted" 
+      @edit-todo="todoEdit"
+      @update-todo="todoUpdate"
+      @delete-todo="todoDelete"
+       />
     </ul>
     <p class="todos-msg" v-else>
           <Icon  icon="noto-v1:sad-but-relieved-face" class="icon" width="22"/>
